@@ -2,7 +2,7 @@ FROM openjdk:8-jre-alpine
 MAINTAINER info@cubeengine.org
 
 ENV MINECRAFT_DIR="/opt/minecraft" \
-	MINECRAFT_VERSION=1.11.2 \
+	MINECRAFT_VERSION=1.12 \
 	# "bleeding" or "stable"
 	SPONGE_TYPE="bleeding" 
 
