@@ -4,7 +4,7 @@ MAINTAINER info@cubeengine.org
 ENV MINECRAFT_DIR="/opt/minecraft" \
 	MINECRAFT_VERSION=1.12 \
 	# "bleeding" or "stable"
-	SPONGE_TYPE="bleeding" 
+	SPONGE_TYPE="bleeding"
 
 ENV SERVER_JAR="${MINECRAFT_DIR}/server.jar" \
 	MINECRAFT_MODS_DIR="${MINECRAFT_DIR}/mods" \
@@ -27,4 +27,4 @@ RUN bash ${SCRIPT_DIR}/install.sh
 EXPOSE 25565/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
-ENTRYPOINT java -jar "${SERVER_JAR}" --mods "./$(realpath --relative-to="${MINECRAFT_DIR}" "${SPONGE_FILE}")"
+ENTRYPOINT java -jar "${SERVER_JAR}" --mods "./$(realpath --relative-to="${MINECRAFT_DIR}" "${SPONGE_FILE}")" ${JAVA_VM_ARGS}
