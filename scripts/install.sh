@@ -46,6 +46,17 @@ install_ce() {
 	popd
 }
 
+register_stuff() {
+	mv -v "${SCRIPT_DIR}/stuff" "${MINECRAFT_STUFF_DIR}"
+
+	for file in ${MINECRAFT_STUFF_DIR}/*; do
+		filename=$(basename ${file})
+		echo "Create link for file '${file}' with filename '${filename}'"
+
+		ln -s "${file}" "${MINECRAFT_DIR}/${filename}" 
+	done
+}
+
 echo "create directories..."
 mkdir -p ${MINECRAFT_DIR}
 mkdir -p ${MINECRAFT_STATIC_MODS_DIR}
@@ -53,6 +64,9 @@ mkdir -p ${MINECRAFT_CE_PLUGINS_DIR}
 
 echo "install forge..."
 install_forge
+
+echo "copying and setting up stuff directory..."
+register_stuff
 
 echo "install sponge..."
 install_sponge
