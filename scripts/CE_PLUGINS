@@ -26,6 +26,7 @@ org.cubeengine.module:multiverse:1.0.0-SNAPSHOT
 org.cubeengine.module:namehistory:1.0.0-SNAPSHOT
 org.cubeengine.module:netherportals:1.0.0-SNAPSHOT
 org.cubeengine.module:patient:1.0.0-SNAPSHOT
+org.cubeengine.module:portals:1.0.0-SNAPSHOT
 org.cubeengine.module:powertools:1.0.0-SNAPSHOT
 org.cubeengine.module:protector:1.0.0-SNAPSHOT
 org.cubeengine.module:roles:1.0.0-SNAPSHOT
