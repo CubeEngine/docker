@@ -30,7 +30,7 @@ COPY maven/settings.xml /usr/share/maven/conf/settings.xml
 COPY scripts/ ${SCRIPT_DIR}
 RUN bash ${SCRIPT_DIR}/install.sh
 
-EXPOSE 25565/tcp
+EXPOSE 25565/tcp 25575/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
 ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
