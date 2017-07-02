@@ -41,4 +41,4 @@ echo "Created CE Plugin Classpath is '${ce_classpath}'"
 
 echo "-------------------------------"
 
-java ${JAVA_VM_ARGS} -jar "${SERVER_JAR}" --mods "${ce_classpath},$(relativize_file ${SPONGE_FILE}),$(relativize_file ${CUBE_ENGINE_FILE})"
+java ${JAVA_VM_ARGS} -jar "${SERVER_JAR}" --mods "${ce_classpath},$(relativize_file ${SPONGE_FILE})"
