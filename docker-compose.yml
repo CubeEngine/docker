@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  forge:
+    restart: always
+    image: cubeengine/forge:latest
+    volumes:
+    - ./data/root:/opt/minecraft/root
+    - ./data/world:/opt/minecraft/world
+    - ./data/config:/opt/minecraft/config
+    - ./data/logs:/opt/minecraft/logs
+    - ./data/mods:/opt/minecraft/mods
+    ports:
+    - "25565:25565"
+    - "25575:25575"
+    environment:
+    - CE_PLUGINS="chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer"
+    
