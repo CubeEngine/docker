@@ -15,7 +15,6 @@ ENV SERVER_JAR="${MINECRAFT_DIR}/server.jar" \
 	MINECRAFT_CONFIG_DIR="${MINECRAFT_DIR}/config" \
 	MINECRAFT_WORLD_DIR="${MINECRAFT_DIR}/world" \
 	MINECRAFT_LOGS_DIR="${MINECRAFT_DIR}/logs" \
-	MINECRAFT_ROOT_STUFF_DIR="${MINECRAFT_DIR}/root" \
 	SCRIPT_DIR="/scripts"
 
 ENV SPONGE_FILE="${MINECRAFT_STATIC_MODS_DIR}/sponge.jar"
@@ -23,7 +22,7 @@ ENV SPONGE_FILE="${MINECRAFT_STATIC_MODS_DIR}/sponge.jar"
 # Upgrading system and install some software
 RUN apk update && \
 	apk upgrade && \
-	apk --update add curl ca-certificates grep coreutils jq bash
+	apk --update add curl ca-certificates grep coreutils jq bash nano
 
 # Install server
 COPY maven/settings.xml /usr/share/maven/conf/settings.xml
@@ -31,7 +30,7 @@ COPY scripts/ ${SCRIPT_DIR}
 RUN bash ${SCRIPT_DIR}/install.sh
 
 EXPOSE 25565/tcp 25575/tcp
-VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}", "${MINECRAFT_ROOT_STUFF_DIR}"]
+VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
 ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
 

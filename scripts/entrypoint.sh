@@ -1,6 +1,10 @@
 #!/bin/bash
 #IFS=$'\x20'
 
+
+server_properties="${MINECRAFT_DIR}/server.properties"
+
+
 #######################################
 # Returns the relative path of the specified file from the 
 # directory specified with the ${MINECRAFT_DIR} property.
@@ -67,7 +71,7 @@ create_include_ce_classpath() {
 # Sets a property within the server.properties file of the 
 # minecraft server.
 # Globals:
-#   - MINECRAFT_ROOT_STUFF_DIR
+#   - server_properties
 # Arguments:
 #   - The property which shall be set.
 #	- The value of the property.
@@ -79,49 +83,58 @@ set_server_property() {
 	local value=$2
 
 	echo "The property '${property}' will be set to '${value}'."
-	sed -i "/${property}\s*=/ c ${property}=${value}" "${MINECRAFT_ROOT_STUFF_DIR}/server.properties"
+	sed -i "/${property}\s*=/ c ${property}=${value}" "${server_properties}"
 }
 
-echo "initialize server.properties..."
-set_server_property "allow-flight" "${ALLOW_FLIGHT}"
-set_server_property "allow-nether" "${ALLOW_NETHER}"
-set_server_property "announce-player-achievements" "${ANNOUNCE_PLAYER_ACHIEVEMENTS}"
-set_server_property "difficulty" "${DIFFICULTY}"
-set_server_property "enable-query" "${ENABLE_QUERY}"
-set_server_property "enable-rcon" "${ENABLE_RCON}"
-set_server_property "enable-command-block" "${ENABLE_COMMAND_BLOCK}"
-set_server_property "force-gamemode" "${FORCE_GAMEMODE}"
-set_server_property "gamemode" "${GAMEMODE}"
-set_server_property "generate-structures" "${GENERATE_STRUCTURES}"
-set_server_property "generator-settings" "${GENERATOR_SETTINGS}"
-set_server_property "hardcore" "${HARDCORE}"
-set_server_property "level-name" "${LEVEL_NAME}"
-set_server_property "level-seed" "${LEVEL_SEED}"
-set_server_property "level-type" "${LEVEL_TYPE}"
-set_server_property "max-build-height" "${MAX_BUILD_HEIGHT}"
-set_server_property "max-players" "${MAX_PLAYERS}"
-set_server_property "max-tick-time" "${MAX_TICK_TIME}"
-set_server_property "max-world-size" "${MAX_WORLD_SIZE}"
-set_server_property "motd" "${MOTD}"
-set_server_property "network-compression-threshold" "${NETWORK_COMPRESSION_THRESHOLD}"
-set_server_property "online-mode" "${ONLINE_MODE}"
-set_server_property "op-permission-level" "${OP_PERMISSION_LEVEL}"
-set_server_property "player-idle-timeout" "${PLAYER_IDLE_TIMEOUT}"
-set_server_property "pvp" "${PVP}"
-set_server_property "query.port" "25565"
-set_server_property "rcon.password" "${RCON_PASSWORD}"
-set_server_property "rcon.port" "25575"
-set_server_property "resource-pack" "${RESOURCE_PACK}"
-set_server_property "resource-pack-hash" "${RESOURCE_PACK_HASH}"
-set_server_property "server-ip" ""
-set_server_property "server-port" "25565"
-set_server_property "snooper-enabled" "${SNOOPER_ENABLED}"
-set_server_property "spawn-animals" "${SPAWN_ANIMALS}"
-set_server_property "spawn-monsters" "${SPAWN_MONSTERS}"
-set_server_property "spawn-npcs" "${SPAWN_NPCS}"
-set_server_property "spawn-protection" "${SPAWN_PROTECTION}"
-set_server_property "view-distance" "${VIEW_DISTANCE}"
-set_server_property "white-list" "${WHITE_LIST}"
+initialize_server_properties() {
+	cp -v "${SCRIPT_DIR}/config/server.properties" "${server_properties}"
+
+	set_server_property "allow-flight" "${ALLOW_FLIGHT}"
+	set_server_property "allow-nether" "${ALLOW_NETHER}"
+	set_server_property "announce-player-achievements" "${ANNOUNCE_PLAYER_ACHIEVEMENTS}"
+	set_server_property "difficulty" "${DIFFICULTY}"
+	set_server_property "enable-query" "${ENABLE_QUERY}"
+	set_server_property "enable-rcon" "${ENABLE_RCON}"
+	set_server_property "enable-command-block" "${ENABLE_COMMAND_BLOCK}"
+	set_server_property "force-gamemode" "${FORCE_GAMEMODE}"
+	set_server_property "gamemode" "${GAMEMODE}"
+	set_server_property "generate-structures" "${GENERATE_STRUCTURES}"
+	set_server_property "generator-settings" "${GENERATOR_SETTINGS}"
+	set_server_property "hardcore" "${HARDCORE}"
+	set_server_property "level-name" "${LEVEL_NAME}"
+	set_server_property "level-seed" "${LEVEL_SEED}"
+	set_server_property "level-type" "${LEVEL_TYPE}"
+	set_server_property "max-build-height" "${MAX_BUILD_HEIGHT}"
+	set_server_property "max-players" "${MAX_PLAYERS}"
+	set_server_property "max-tick-time" "${MAX_TICK_TIME}"
+	set_server_property "max-world-size" "${MAX_WORLD_SIZE}"
+	set_server_property "motd" "${MOTD}"
+	set_server_property "network-compression-threshold" "${NETWORK_COMPRESSION_THRESHOLD}"
+	set_server_property "online-mode" "${ONLINE_MODE}"
+	set_server_property "op-permission-level" "${OP_PERMISSION_LEVEL}"
+	set_server_property "player-idle-timeout" "${PLAYER_IDLE_TIMEOUT}"
+	set_server_property "pvp" "${PVP}"
+	set_server_property "query.port" "25565"
+	set_server_property "rcon.password" "${RCON_PASSWORD}"
+	set_server_property "rcon.port" "25575"
+	set_server_property "resource-pack" "${RESOURCE_PACK}"
+	set_server_property "resource-pack-hash" "${RESOURCE_PACK_HASH}"
+	set_server_property "server-ip" ""
+	set_server_property "server-port" "25565"
+	set_server_property "snooper-enabled" "${SNOOPER_ENABLED}"
+	set_server_property "spawn-animals" "${SPAWN_ANIMALS}"
+	set_server_property "spawn-monsters" "${SPAWN_MONSTERS}"
+	set_server_property "spawn-npcs" "${SPAWN_NPCS}"
+	set_server_property "spawn-protection" "${SPAWN_PROTECTION}"
+	set_server_property "view-distance" "${VIEW_DISTANCE}"
+	set_server_property "white-list" "${WHITE_LIST}"
+}
+
+if [ ! -f "${server_properties}" ]
+then
+	echo "initialize server.properties..."
+	initialize_server_properties
+fi
 
 echo "create the ce classpath..."
 if [ -z "${CE_PLUGINS}" ]

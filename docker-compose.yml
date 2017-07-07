@@ -5,7 +5,6 @@ services:
     restart: always
     image: cubeengine/forge:latest
     volumes:
-    - ./data/root:/opt/minecraft/root
     - ./data/world:/opt/minecraft/world
     - ./data/config:/opt/minecraft/config
     - ./data/logs:/opt/minecraft/logs
