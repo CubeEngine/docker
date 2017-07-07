@@ -1,9 +1,22 @@
 version: '3'
 
 services:
+  database-mysql:
+    restart: always
+    image: mysql:5.7
+    volumes:
+    - ./data/db-mysql:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=<root-user-pw>
+    - MYSQL_DATABASE=minecraft
+    - MYSQL_USER=minecraft
+    - MYSQL_PASSWORD=<user-pw>
+
   forge:
     restart: always
     image: cubeengine/forge:latest
+    depends_on:
+    - database-mysql
     volumes:
     - ./data/world:/opt/minecraft/world
     - ./data/config:/opt/minecraft/config
@@ -13,6 +26,7 @@ services:
     - "25565:25565"
     - "25575:25575"
     environment:
-    - CE_PLUGINS=chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer
+    - CE_PLUGINS=chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer itemrepair
+    - DB_PASSWORD=<user-pw>
     - ENABLE_RCON=true
     - RCON_PASSWORD=<super-secret-password>
