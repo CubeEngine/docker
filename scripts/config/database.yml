@@ -1,0 +1,18 @@
+# The host to connect with. Default: localhost
+host: localhost
+
+# The port to connect with. Default 3306
+port: 3306
+
+# The user using the database
+user: minecraft
+
+# The password for the specified user
+password: ''
+
+# The name of the database
+database: minecraft
+
+# The table prefix to use for all CubeEngine tables
+table-prefix: cube_
+log-database-queries: false

@@ -22,7 +22,7 @@ ENV SPONGE_FILE="${MINECRAFT_STATIC_MODS_DIR}/sponge.jar"
 # Upgrading system and install some software
 RUN apk update && \
 	apk upgrade && \
-	apk --update add curl ca-certificates grep coreutils jq bash nano
+	apk --update add curl ca-certificates grep coreutils jq bash
 
 # Install server
 COPY maven/settings.xml /usr/share/maven/conf/settings.xml
@@ -38,7 +38,15 @@ ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
 ENV JAVA_VM_ARGS="" \
 	# lists the plugins which shall be activated. an empty or unset string results in a server containing all plugins
 	# example "roles worlds vanillaplus fun fly"
-	CE_PLUGINS="" \
+	CE_PLUGINS="" \	
+	# Database settings. Supported Databases are MySQL, Sqlite and H2
+	DB_HOST=localhost \
+	DB_PORT=3306 \
+	DB_USER=minecraft \
+	DB_PASSWORD="" \
+	DB_NAME=minecraft \
+	DB_TABLE_PREFIX=cube_ \
+	DB_LOG_DATABASE_QUERIES=false \
 	# The next env variables control the server.properties file. Have a look at the documentation of the file to get the meaning.
 	ALLOW_FLIGHT=false \
 	ALLOW_NETHER=true \

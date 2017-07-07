@@ -3,7 +3,7 @@
 
 
 server_properties="${MINECRAFT_DIR}/server.properties"
-
+database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/database.yml"
 
 #######################################
 # Returns the relative path of the specified file from the 
@@ -82,7 +82,7 @@ set_server_property() {
 	local property=$1
 	local value=$2
 
-	echo "The property '${property}' will be set to '${value}'."
+	echo "The server property '${property}' will be set to '${value}'."
 	sed -i "/${property}\s*=/ c ${property}=${value}" "${server_properties}"
 }
 
@@ -130,10 +130,37 @@ initialize_server_properties() {
 	set_server_property "white-list" "${WHITE_LIST}"
 }
 
+set_db_property() {
+	local property=$1
+	local value=$2
+
+	echo "The database property '${property}' will be set to '${value}'."
+	sed -i "/${property}\s*:/ c ${property}: '${value}'" "${database_conf}"
+}
+
+initialize_database_config() {
+	mkdir -p "$(dirname ${database_conf})"
+	cp -v "${SCRIPT_DIR}/config/database.yml" "${database_conf}"
+
+	set_db_property "host" "${DB_HOST}"
+	set_db_property "port" "${DB_PORT}"
+	set_db_property "user" "${DB_USER}"
+	set_db_property "password" "${DB_PASSWORD}"
+	set_db_property "database" "${DB_NAME}"
+	set_db_property "table-prefix" "${DB_TABLE_PREFIX}"
+	set_db_property "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
+}
+
 if [ ! -f "${server_properties}" ]
 then
 	echo "initialize server.properties..."
 	initialize_server_properties
+fi
+
+if [ ! -f "${database_conf}" ]
+then
+	echo "initialize database config..."
+	initialize_database_config
 fi
 
 echo "create the ce classpath..."
