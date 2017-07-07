@@ -1,13 +1,12 @@
 FROM maven:3-jdk-8-alpine
 MAINTAINER info@cubeengine.org
 
+# Th env variables of the next three layers are used for the image creation process.
+# Setting them for a container shouldn't have any effect. With the exception of a non working container ;)
 ENV MINECRAFT_DIR="/opt/minecraft" \
 	MINECRAFT_VERSION=1.12 \
 	# "bleeding" or "stable"
-	SPONGE_TYPE="bleeding" \
-	# lists the plugins which shall be activated. an empty or unset string results in a server containing all plugins
-	# example "roles worlds vanillaplus fun fly"
-	CE_PLUGINS=""
+	SPONGE_TYPE="bleeding"
 
 ENV SERVER_JAR="${MINECRAFT_DIR}/server.jar" \
 	MINECRAFT_MODS_DIR="${MINECRAFT_DIR}/mods" \
@@ -35,3 +34,45 @@ EXPOSE 25565/tcp 25575/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}", "${MINECRAFT_ROOT_STUFF_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
 ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
+
+# This environment variables can be used to control the server.
+ENV JAVA_VM_ARGS="" \
+	# lists the plugins which shall be activated. an empty or unset string results in a server containing all plugins
+	# example "roles worlds vanillaplus fun fly"
+	CE_PLUGINS="" \
+	# The next env variables control the server.properties file. Have a look at the documentation of the file to get the meaning.
+	ALLOW_FLIGHT=false \
+	ALLOW_NETHER=true \
+	ANNOUNCE_PLAYER_ACHIEVEMENTS=true \
+	DIFFICULTY=1 \
+	ENABLE_QUERY=false \
+	ENABLE_RCON=false \
+	ENABLE_COMMAND_BLOCK=false \
+	FORCE_GAMEMODE=false \
+	GAMEMODE=0 \
+	GENERATE_STRUCTURES=true \
+	GENERATOR_SETTINGS="" \
+	HARDCORE=false \
+	LEVEL_NAME=world \
+	LEVEL_SEED="" \
+	LEVEL_TYPE=DEFAULT \
+	MAX_BUILD_HEIGHT=256 \
+	MAX_PLAYERS=20 \
+	MAX_TICK_TIME=60000 \
+	MAX_WORLD_SIZE=29999984 \
+	MOTD="A Minecraft Server" \
+	NETWORK_COMPRESSION_THRESHOLD=256 \
+	ONLINE_MODE=true \
+	OP_PERMISSION_LEVEL=4 \
+	PLAYER_IDLE_TIMEOUT=0 \
+	PVP=true \
+	RCON_PASSWORD="" \
+	RESOURCE_PACK="" \
+	RESOURCE_PACK_HASH="" \
+	SNOOPER_ENABLED=true \
+	SPAWN_ANIMALS=true \
+	SPAWN_MONSTERS=true \
+	SPAWN_NPCS=true \
+	SPAWN_PROTECTION=16 \
+	VIEW_DISTANCE=10 \
+	WHITE_LIST=false \
