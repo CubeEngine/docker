@@ -14,5 +14,6 @@ services:
     - "25565:25565"
     - "25575:25575"
     environment:
-    - CE_PLUGINS="chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer"
-    
+    - CE_PLUGINS=chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer
+    - ENABLE_RCON=true
+    - RCON_PASSWORD=<super-secret-password>
