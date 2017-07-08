@@ -82,13 +82,11 @@ set_server_property() {
 	local property=$1
 	local value=$2
 
-	echo "The server property '${property}' will be set to '${value}'."
-	sed -i "/${property}\s*=/ c ${property}=${value}" "${server_properties}"
+	echo "Sets server property '${property}' to '${value}'."
+	echo "${property}=${value}" >> "${server_properties}"
 }
 
 initialize_server_properties() {
-	cp -v "${SCRIPT_DIR}/config/server.properties" "${server_properties}"
-
 	set_server_property "allow-flight" "${ALLOW_FLIGHT}"
 	set_server_property "allow-nether" "${ALLOW_NETHER}"
 	set_server_property "announce-player-achievements" "${ANNOUNCE_PLAYER_ACHIEVEMENTS}"
@@ -134,13 +132,12 @@ set_db_property() {
 	local property=$1
 	local value=$2
 
-	echo "The database property '${property}' will be set to '${value}'."
-	sed -i "/${property}\s*:/ c ${property}: '${value}'" "${database_conf}"
+	echo "Sets the database property '${property}' to '${value}'."
+	echo "${property}: '${value}'" >> "${database_conf}"
 }
 
 initialize_database_config() {
 	mkdir -p "$(dirname ${database_conf})"
-	cp -v "${SCRIPT_DIR}/config/database.yml" "${database_conf}"
 
 	set_db_property "host" "${DB_HOST}"
 	set_db_property "port" "${DB_PORT}"
