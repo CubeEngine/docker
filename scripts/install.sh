@@ -37,13 +37,35 @@ install_ce() {
 	popd
 }
 
+create_empty_json_for_root() {
+	local filename=$1
+
+	local root_file=${MINECRAFT_DIR}/${filename}
+	local root_dir_file=${MINECRAFT_ROOT_STUFF_DIR}/${filename}
+	
+	echo "[]" > "${root_dir_file}"
+	
+	ln -s "${root_dir_file}" "${root_file}"
+}
+
+register_root_stuff() {
+	create_empty_json_for_root "banned-ips.json"
+	create_empty_json_for_root "banned-players.json"
+	create_empty_json_for_root "ops.json"
+	create_empty_json_for_root "whitelist.json"
+}
+
 echo "create directories..."
 mkdir -p ${MINECRAFT_DIR}
 mkdir -p ${MINECRAFT_STATIC_MODS_DIR}
 mkdir -p ${MINECRAFT_CE_PLUGINS_DIR}
+mkdir -p ${MINECRAFT_ROOT_STUFF_DIR}
 
 echo "install forge..."
 install_forge
+
+echo "copying and setting up the root stuff directory..."
+register_root_stuff
 
 echo "install sponge..."
 install_sponge
