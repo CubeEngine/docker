@@ -28,6 +28,7 @@ services:
     - "25575:25575"
     environment:
     - CE_PLUGINS=chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer itemrepair
+    - DB_HOST=database-mysql
     - DB_PASSWORD=<user-pw>
     - ENABLE_RCON=true
     - RCON_PASSWORD=<super-secret-password>
