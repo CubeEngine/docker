@@ -45,3 +45,4 @@ services:
     - MONGO_DB_PASSWORD=<mongo-db-user-pw>
     - ENABLE_RCON=true
     - RCON_PASSWORD=<rcon-pw>
+    - JAVA_VM_ARGS=-Xmx2G
