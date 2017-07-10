@@ -1,12 +1,12 @@
 #!/bin/bash
 #IFS=$'\x20'
 
-
 server_properties="${MINECRAFT_DIR}/server.properties"
 database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/database.yml"
+mongo_database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/modules/bigdata/config.yml"
 
 #######################################
-# Returns the relative path of the specified file from the 
+# Returns the relative path of the specified file from the
 # directory specified with the ${MINECRAFT_DIR} property.
 # Globals:
 #   - MINECRAFT_DIR
@@ -20,7 +20,7 @@ relativize_file() {
 }
 
 #######################################
-# Creates a classpath out of all existing .jar files within 
+# Creates a classpath out of all existing .jar files within
 # the directory specified with the ${MINECRAFT_CE_PLUGINS_DIR} property.
 # Globals:
 #   - MINECRAFT_CE_PLUGINS_DIR
@@ -45,9 +45,9 @@ create_complete_ce_classpath() {
 }
 
 #######################################
-# Creates a classpath out of all plugins specified in the 
-# ${CE_PLUGINS[@]} property. The plugins must be seperated 
-# with a space. This method simply creates the classpath. 
+# Creates a classpath out of all plugins specified in the
+# ${CE_PLUGINS[@]} property. The plugins must be seperated
+# with a space. This method simply creates the classpath.
 # It doesn't ensures that a plugin really exists.
 # Globals:
 #   - MINECRAFT_CE_PLUGINS_DIR
@@ -63,12 +63,12 @@ create_include_ce_classpath() {
 	for plugin in ${CE_PLUGINS[@]}; do
 		classpath=$(echo ${classpath},$(relativize_file "${MINECRAFT_CE_PLUGINS_DIR}/${plugin}.jar"))
 	done
-	
+
 	echo ${classpath}
 }
 
 #######################################
-# Sets a property within the server.properties file of the 
+# Sets a property within the server.properties file of the
 # minecraft server.
 # Globals:
 #   - server_properties
@@ -128,24 +128,43 @@ initialize_server_properties() {
 	set_server_property "white-list" "${WHITE_LIST}"
 }
 
-set_db_property() {
-	local property=$1
-	local value=$2
+set_json_property() {
+	local file=$1
+	local property=$2
+	local value=$3
 
-	echo "Sets the database property '${property}' to '${value}'."
-	echo "${property}: '${value}'" >> "${database_conf}"
+	if [ "${3+set}" = set ]
+	then
+		echo "Sets the json property '${property}' to '${value}' in file '{$file}'."
+		echo "${property}: '${value}'" >> "${file}"
+	else
+	    echo "Sets the json property '${property}' in file '{$file}' without value."
+		echo "${property}:" >> "${file}"
+	fi
 }
 
 initialize_database_config() {
 	mkdir -p "$(dirname ${database_conf})"
 
-	set_db_property "host" "${DB_HOST}"
-	set_db_property "port" "${DB_PORT}"
-	set_db_property "user" "${DB_USER}"
-	set_db_property "password" "${DB_PASSWORD}"
-	set_db_property "database" "${DB_NAME}"
-	set_db_property "table-prefix" "${DB_TABLE_PREFIX}"
-	set_db_property "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
+	set_json_property "${database_conf}" "host" "${DB_HOST}"
+	set_json_property "${database_conf}" "port" "${DB_PORT}"
+	set_json_property "${database_conf}" "user" "${DB_USER}"
+	set_json_property "${database_conf}" "password" "${DB_PASSWORD}"
+	set_json_property "${database_conf}" "database" "${DB_NAME}"
+	set_json_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
+	set_json_property "${database_conf}" "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
+}
+
+initialize_mongo_database_config() {
+	mkdir -p "$(dirname ${mongo_database_conf})"
+
+	set_json_property "${mongo_database_conf}" "host" "${MONGO_DB_HOST}"
+	set_json_property "${mongo_database_conf}" "port" "${MONGO_DB_PORT}"
+	set_json_property "${mongo_database_conf}" "connection-timeout" "${MONGO_DB_CONNECTION_TIMEOUT}"
+	set_json_property "${mongo_database_conf}" "authentication"
+	set_json_property "${mongo_database_conf}" "  database" "${MONGO_DB_NAME}"
+	set_json_property "${mongo_database_conf}" "  username" "${MONGO_DB_USER}"
+	set_json_property "${mongo_database_conf}" "  password" "${MONGO_DB_PASSWORD}"
 }
 
 if [ ! -f "${server_properties}" ]
@@ -158,6 +177,12 @@ if [ ! -f "${database_conf}" ]
 then
 	echo "initialize database config..."
 	initialize_database_config
+fi
+
+if [ ! -f "${mongo_database_conf}" ]
+then
+	echo "initialize mongo database config..."
+	initialize_mongo_database_config
 fi
 
 echo "create the ce classpath..."

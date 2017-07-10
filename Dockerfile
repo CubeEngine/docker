@@ -48,6 +48,13 @@ ENV JAVA_VM_ARGS="" \
 	DB_NAME=minecraft \
 	DB_TABLE_PREFIX=cube_ \
 	DB_LOG_DATABASE_QUERIES=false \
+	# Mongo DB settings. Used by the bigdata plugin.
+	MONGO_DB_HOST=localhost \
+	MONGO_DB_PORT=27017 \
+	MONGO_DB_USER=minecraft \
+	MONGO_DB_PASSWORD="" \
+	MONGO_DB_NAME=cubeengine \
+	MONGO_DB_CONNECTION_TIMEOUT=5000 \
 	# The next env variables control the server.properties file. Have a look at the documentation of the file to get the meaning.
 	ALLOW_FLIGHT=false \
 	ALLOW_NETHER=true \

@@ -7,16 +7,27 @@ services:
     volumes:
     - ./data/db-mysql:/var/lib/mysql
     environment:
-    - MYSQL_ROOT_PASSWORD=<root-user-pw>
+    - MYSQL_ROOT_PASSWORD=<db-root-pw>
     - MYSQL_DATABASE=minecraft
     - MYSQL_USER=minecraft
-    - MYSQL_PASSWORD=<user-pw>
+    - MYSQL_PASSWORD=<db-user-pw>
+
+  database-mongo:
+    restart: always
+    image: frodenas/mongodb:3.0
+    volumes:
+    - ./data/db-mongo:/data
+    environment:
+    - MONGODB_DBNAME=cubeengine
+    - MONGODB_USERNAME=minecraft
+    - MONGODB_PASSWORD=<mongo-db-user-pw>
 
   forge:
     restart: always
     image: cubeengine/forge:latest
     depends_on:
     - database-mysql
+    - database-mongo
     volumes:
     - ./data/root:/opt/minecraft/root
     - ./data/world:/opt/minecraft/world
@@ -29,6 +40,8 @@ services:
     environment:
     - CE_PLUGINS=chopchop docs elevator fun netherportals portals protector powertools spawn teleport travel vanillaplus worldcontrol worlds writer itemrepair
     - DB_HOST=database-mysql
-    - DB_PASSWORD=<user-pw>
+    - DB_PASSWORD=<db-user-pw>
+    - MONGO_DB_HOST=database-mongo
+    - MONGO_DB_PASSWORD=<mongo-db-user-pw>
     - ENABLE_RCON=true
-    - RCON_PASSWORD=<super-secret-password>
+    - RCON_PASSWORD=<rcon-pw>
