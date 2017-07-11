@@ -2,7 +2,13 @@
 
 version_info_json="$(curl -v "https://dl-api.spongepowered.org/v1/org.spongepowered/spongeforge/downloads?type=${SPONGE_TYPE}&minecraft=${MINECRAFT_VERSION}")"
 
-# Install Minecraft Forge
+#######################################
+# Installs the actual Minecraft Forge server.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 install_forge() {
 	forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${version_info_json} | jq --raw-output '.[0] | .dependencies | .forge')")"
 	echo "forge version: ${forge_version}"
@@ -16,7 +22,13 @@ install_forge() {
 	popd
 }
 
-# Install SpongeForge
+#######################################
+# Installs the forge plugin SpongeForge.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 install_sponge() {
 	echo "Sponge version: $(echo ${version_info_json} | jq '.[0] | .version')"
 	
@@ -26,7 +38,15 @@ install_sponge() {
 	curl -vo "${SPONGE_FILE}" "${sponge_url}"
 }
 
-# Install CE-Plugins
+#######################################
+# Installs the CubeEngine Plugins from the CE_PLUGINS file.
+# The file must specify the complete plugin maven identifier
+# to download the jar file with maven.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 install_ce() {
 	pushd "${MINECRAFT_CE_PLUGINS_DIR}"
 		while read artifact; do
@@ -37,6 +57,16 @@ install_ce() {
 	popd
 }
 
+#######################################
+# Creates a file containing an empty json array. This file will be
+# created into a directory named root within the minecraft server
+# directory. Furthermore a link to it will be created at the minecraft
+# server directory.
+# Arguments:
+#   - The name of the file to create
+# Returns:
+#   None
+#######################################
 create_empty_json_for_root() {
 	local filename=$1
 
@@ -48,6 +78,15 @@ create_empty_json_for_root() {
 	ln -s "${root_dir_file}" "${root_file}"
 }
 
+#######################################
+# Creates all the files from the root directory of the minecraft
+# server which must be persisted, creates them in a special folder
+# and adds links to the root directory.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 register_root_stuff() {
 	create_empty_json_for_root "banned-ips.json"
 	create_empty_json_for_root "banned-players.json"

@@ -86,6 +86,13 @@ set_server_property() {
 	echo "${property}=${value}" >> "${server_properties}"
 }
 
+#######################################
+# Initializes the server properties file.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 initialize_server_properties() {
 	set_server_property "allow-flight" "${ALLOW_FLIGHT}"
 	set_server_property "allow-nether" "${ALLOW_NETHER}"
@@ -128,7 +135,18 @@ initialize_server_properties() {
 	set_server_property "white-list" "${WHITE_LIST}"
 }
 
-set_json_property() {
+#######################################
+# Sets a yaml property within a specified file.
+# Indentation isn't respected by this method.
+# This can be done with spaces in the beginning of the property name.
+# Arguments:
+#   - The file to add the property to.
+#   - The actual property
+#   - The value of the property. Is optional and doesn't have to be set.
+# Returns:
+#   None
+#######################################
+set_yml_property() {
 	local file=$1
 	local property=$2
 	local value=$3
@@ -143,28 +161,42 @@ set_json_property() {
 	fi
 }
 
+#######################################
+# Initializes the database configuration.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 initialize_database_config() {
 	mkdir -p "$(dirname ${database_conf})"
 
-	set_json_property "${database_conf}" "host" "${DB_HOST}"
-	set_json_property "${database_conf}" "port" "${DB_PORT}"
-	set_json_property "${database_conf}" "user" "${DB_USER}"
-	set_json_property "${database_conf}" "password" "${DB_PASSWORD}"
-	set_json_property "${database_conf}" "database" "${DB_NAME}"
-	set_json_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
-	set_json_property "${database_conf}" "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
+	set_yml_property "${database_conf}" "host" "${DB_HOST}"
+	set_yml_property "${database_conf}" "port" "${DB_PORT}"
+	set_yml_property "${database_conf}" "user" "${DB_USER}"
+	set_yml_property "${database_conf}" "password" "${DB_PASSWORD}"
+	set_yml_property "${database_conf}" "database" "${DB_NAME}"
+	set_yml_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
+	set_yml_property "${database_conf}" "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
 }
 
+#######################################
+# Initializes the mongodb configuration.
+# Arguments:
+#   None
+# Returns:
+#   None
+#######################################
 initialize_mongo_database_config() {
 	mkdir -p "$(dirname ${mongo_database_conf})"
 
-	set_json_property "${mongo_database_conf}" "host" "${MONGO_DB_HOST}"
-	set_json_property "${mongo_database_conf}" "port" "${MONGO_DB_PORT}"
-	set_json_property "${mongo_database_conf}" "connection-timeout" "${MONGO_DB_CONNECTION_TIMEOUT}"
-	set_json_property "${mongo_database_conf}" "authentication"
-	set_json_property "${mongo_database_conf}" "  database" "${MONGO_DB_NAME}"
-	set_json_property "${mongo_database_conf}" "  username" "${MONGO_DB_USER}"
-	set_json_property "${mongo_database_conf}" "  password" "${MONGO_DB_PASSWORD}"
+	set_yml_property "${mongo_database_conf}" "host" "${MONGO_DB_HOST}"
+	set_yml_property "${mongo_database_conf}" "port" "${MONGO_DB_PORT}"
+	set_yml_property "${mongo_database_conf}" "connection-timeout" "${MONGO_DB_CONNECTION_TIMEOUT}"
+	set_yml_property "${mongo_database_conf}" "authentication"
+	set_yml_property "${mongo_database_conf}" "  database" "${MONGO_DB_NAME}"
+	set_yml_property "${mongo_database_conf}" "  username" "${MONGO_DB_USER}"
+	set_yml_property "${mongo_database_conf}" "  password" "${MONGO_DB_PASSWORD}"
 }
 
 if [ ! -f "${server_properties}" ]

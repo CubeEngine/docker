@@ -39,7 +39,7 @@ ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
 ENV JAVA_VM_ARGS="" \
 	# lists the plugins which shall be activated. an empty or unset string results in a server containing all plugins
 	# example "roles worlds vanillaplus fun fly"
-	CE_PLUGINS="" \	
+	CE_PLUGINS="" \
 	# Database settings. Supported Databases are MySQL, Sqlite and H2
 	DB_HOST=localhost \
 	DB_PORT=3306 \
