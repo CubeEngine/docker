@@ -14,7 +14,6 @@ org.cubeengine.module:donations:1.0.0-SNAPSHOT
 org.cubeengine.module:elevator:1.0.0-SNAPSHOT
 org.cubeengine.module:faq:1.0.0-SNAPSHOT
 org.cubeengine.module:fly:1.0.0-SNAPSHOT
-org.cubeengine.module:freezedetection:1.0.0-SNAPSHOT
 org.cubeengine.module:fun:1.0.0-SNAPSHOT
 org.cubeengine.module:hide:1.0.0-SNAPSHOT
 org.cubeengine.module:itemrepair:1.0.0-SNAPSHOT
