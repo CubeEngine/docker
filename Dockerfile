@@ -35,7 +35,7 @@ USER "${USER_NAME}:${USER_NAME}"
 # Install server
 COPY maven/settings.xml /usr/share/maven/conf/settings.xml
 COPY scripts/ ${SCRIPT_DIR}
-RUN ${SCRIPT_DIR}/install.sh
+RUN bash ${SCRIPT_DIR}/install.sh
 
 RUN mkdir -p "${MINECRAFT_MODS_DIR}" && \
     mkdir -p "${MINECRAFT_CONFIG_DIR}" && \
@@ -46,7 +46,7 @@ RUN mkdir -p "${MINECRAFT_MODS_DIR}" && \
 EXPOSE 25565/tcp 25575/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}", "${MINECRAFT_ROOT_STUFF_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
-ENTRYPOINT ${SCRIPT_DIR}/entrypoint.sh
+ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
 
 # This environment variables can be used to control the server.
 ENV JAVA_VM_ARGS="" \
