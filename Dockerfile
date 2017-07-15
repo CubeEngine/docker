@@ -3,10 +3,14 @@ MAINTAINER info@cubeengine.org
 
 # Th env variables of the next three layers are used for the image creation process.
 # Setting them for a container shouldn't have any effect. With the exception of a non working container ;)
-ENV MINECRAFT_DIR="/opt/minecraft" \
-	MINECRAFT_VERSION=1.12 \
+ENV MINECRAFT_VERSION=1.12 \
 	# "bleeding" or "stable"
-	SPONGE_TYPE="bleeding"
+	SPONGE_TYPE="bleeding" \
+	USER_ID=4928 \
+	USER_NAME="minecraft"
+
+ENV MINECRAFT_DIR="/home/${USER_NAME}/server" \
+    SCRIPT_DIR="/scripts"
 
 ENV SERVER_JAR="${MINECRAFT_DIR}/server.jar" \
 	MINECRAFT_MODS_DIR="${MINECRAFT_DIR}/mods" \
@@ -15,8 +19,7 @@ ENV SERVER_JAR="${MINECRAFT_DIR}/server.jar" \
 	MINECRAFT_CONFIG_DIR="${MINECRAFT_DIR}/config" \
 	MINECRAFT_WORLD_DIR="${MINECRAFT_DIR}/world" \
 	MINECRAFT_LOGS_DIR="${MINECRAFT_DIR}/logs" \
-	MINECRAFT_ROOT_STUFF_DIR="${MINECRAFT_DIR}/root" \
-	SCRIPT_DIR="/scripts"
+	MINECRAFT_ROOT_STUFF_DIR="${MINECRAFT_DIR}/root"
 
 ENV SPONGE_FILE="${MINECRAFT_STATIC_MODS_DIR}/sponge.jar"
 
@@ -25,15 +28,25 @@ RUN apk update && \
 	apk upgrade && \
 	apk --update add curl ca-certificates grep coreutils jq bash
 
+# Create user and group
+RUN adduser -D -u "${USER_ID}" "${USER_NAME}"
+USER "${USER_NAME}:${USER_NAME}"
+
 # Install server
 COPY maven/settings.xml /usr/share/maven/conf/settings.xml
 COPY scripts/ ${SCRIPT_DIR}
-RUN bash ${SCRIPT_DIR}/install.sh
+RUN ${SCRIPT_DIR}/install.sh
+
+RUN mkdir -p "${MINECRAFT_MODS_DIR}" && \
+    mkdir -p "${MINECRAFT_CONFIG_DIR}" && \
+    mkdir -p "${MINECRAFT_WORLD_DIR}" && \
+    mkdir -p "${MINECRAFT_LOGS_DIR}" && \
+    mkdir -p "${MINECRAFT_ROOT_STUFF_DIR}"
 
 EXPOSE 25565/tcp 25575/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}", "${MINECRAFT_ROOT_STUFF_DIR}"]
 WORKDIR ${MINECRAFT_DIR}
-ENTRYPOINT bash ${SCRIPT_DIR}/entrypoint.sh
+ENTRYPOINT ${SCRIPT_DIR}/entrypoint.sh
 
 # This environment variables can be used to control the server.
 ENV JAVA_VM_ARGS="" \

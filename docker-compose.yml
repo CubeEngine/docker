@@ -29,11 +29,11 @@ services:
     - database-mysql
     - database-mongo
     volumes:
-    - ./data/root:/opt/minecraft/root
-    - ./data/world:/opt/minecraft/world
-    - ./data/config:/opt/minecraft/config
-    - ./data/logs:/opt/minecraft/logs
-    - ./data/mods:/opt/minecraft/mods
+    - ./data/root:/home/minecraft/server/root
+    - ./data/world:/home/minecraft/server/world
+    - ./data/config:/home/minecraft/server/config
+    - ./data/logs:/home/minecraft/server/logs
+    - ./data/mods:/home/minecraft/server/mods
     ports:
     - "25565:25565"
     - "25575:25575"
