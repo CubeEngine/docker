@@ -41,7 +41,8 @@ RUN mkdir -p "${MINECRAFT_MODS_DIR}" && \
     mkdir -p "${MINECRAFT_CONFIG_DIR}" && \
     mkdir -p "${MINECRAFT_WORLD_DIR}" && \
     mkdir -p "${MINECRAFT_LOGS_DIR}" && \
-    mkdir -p "${MINECRAFT_ROOT_STUFF_DIR}"
+    mkdir -p "${MINECRAFT_ROOT_STUFF_DIR}" && \
+    chmod -R o+rwx "${MINECRAFT_DIR}"
 
 EXPOSE 25565/tcp 25575/tcp
 VOLUME ["${MINECRAFT_MODS_DIR}", "${MINECRAFT_CONFIG_DIR}", "${MINECRAFT_WORLD_DIR}", "${MINECRAFT_LOGS_DIR}", "${MINECRAFT_ROOT_STUFF_DIR}"]
