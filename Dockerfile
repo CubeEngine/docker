@@ -6,7 +6,6 @@ MAINTAINER info@cubeengine.org
 ENV MINECRAFT_VERSION=1.12 \
 	# "bleeding" or "stable"
 	SPONGE_TYPE="bleeding" \
-	USER_ID=4928 \
 	USER_NAME="minecraft"
 
 ENV MINECRAFT_DIR="/home/${USER_NAME}/server" \
@@ -29,7 +28,7 @@ RUN apk update && \
 	apk --update add curl ca-certificates grep coreutils jq bash
 
 # Create user and group
-RUN adduser -D -u "${USER_ID}" "${USER_NAME}"
+RUN adduser -D -u 4928 "${USER_NAME}"
 USER "${USER_NAME}:${USER_NAME}"
 
 # Install server
