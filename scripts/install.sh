@@ -50,11 +50,39 @@ install_sponge() {
 install_ce() {
 	pushd "${MINECRAFT_CE_PLUGINS_DIR}"
 		while read artifact; do
-		  mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.1:copy -Dartifact=$(echo ${artifact} | xargs) -DoutputDirectory="./"
-		  artifact_id=$(echo ${artifact} | grep -oP ':\K[^:]+' | head -n 1)
-		  mv -v ${artifact_id}* ${artifact_id}.jar
+		    local artifact_id=$(echo ${artifact} | grep -oP ':\K[^:]+' | head -n 1)
+            download_maven_artifact "${artifact}" "${artifact_id}" 0
 		done <"${SCRIPT_DIR}/CE_PLUGINS"
 	popd
+}
+
+download_maven_artifact() {
+    local artifact=$1
+    local artifact_id=$2
+    local retry=$3
+
+    if [ ${retry} -gt 2 ]
+    then
+        echo "The maven artifact ${artifact} couldn't be downloaded."
+        exit 1
+    fi
+
+    local additional_params=""
+    if [ ${retry} -gt 0 ]
+    then
+        local additional_params="-U"
+    fi
+
+    local retry=$(expr ${retry} + 1)
+
+    echo "Downloads maven artifact ${artifact}. ${retry}. try..."
+    mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.1:copy -Dartifact=$(echo ${artifact} | xargs) -DoutputDirectory="./" ${additional_params}
+
+    mv -v ${artifact_id}* ${artifact_id}.jar
+    if [ $? -ne 0 ]
+    then
+        download_maven_artifact "${artifact}" "${artifact_id}" ${retry}
+    fi
 }
 
 #######################################
