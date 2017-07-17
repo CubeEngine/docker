@@ -54,6 +54,9 @@ install_ce() {
             download_maven_artifact "${artifact}" "${artifact_id}" 0
 		done <"${SCRIPT_DIR}/CE_PLUGINS"
 	popd
+
+	echo "Cleans up the maven repo..."
+	rm -R "~/.m2"
 }
 
 download_maven_artifact() {
