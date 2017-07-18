@@ -15,9 +15,16 @@ install_forge() {
 
 	pushd "${MINECRAFT_DIR}"
 		curl -vo ./installer.jar "http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forge_version}/forge-${forge_version}-installer.jar"
+
 		java -jar ./installer.jar --installServer
 		rm ./installer.jar
 		mv -v "./forge-${forge_version}-universal.jar" "${SERVER_JAR}"
+		if [ $? -ne 0 ]
+		then
+			echo "Forge couldn't be installed."
+			exit 1
+		fi
+
 		echo "eula=true" > ./eula.txt
 	popd
 }
@@ -36,6 +43,11 @@ install_sponge() {
 	
 	echo "Download sponge from ${sponge_url}"
 	curl -vo "${SPONGE_FILE}" "${sponge_url}"
+	if [ $? -ne 0 ]
+	then
+		echo "Sponge couldn't be downloaded."
+		exit 1
+	fi
 }
 
 #######################################
