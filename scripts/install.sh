@@ -56,7 +56,7 @@ install_ce() {
 	popd
 
 	echo "Cleans up the maven repo..."
-	rm -R "~/.m2"
+	rm -Rv "/home/${USER_NAME}/.m2/"
 }
 
 download_maven_artifact() {
