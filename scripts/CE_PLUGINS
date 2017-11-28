@@ -1,4 +1,4 @@
-org.cubeengine:libcube:1.0.0-SNAPSHOT
+org.cubeengine:libcube:1.0.1-SNAPSHOT
 org.cubeengine.module:apiserver:1.0.0-SNAPSHOT
 org.cubeengine.module:authorization:1.0.0-SNAPSHOT
 org.cubeengine.module:backpack:1.0.0-SNAPSHOT
@@ -16,7 +16,7 @@ org.cubeengine.module:faq:1.0.0-SNAPSHOT
 org.cubeengine.module:fly:1.0.0-SNAPSHOT
 org.cubeengine.module:fun:1.0.0-SNAPSHOT
 org.cubeengine.module:hide:1.0.0-SNAPSHOT
-org.cubeengine.module:itemduct:1.0.0-SNAPSHOT
+org.cubeengine.module:itemduct:1.0.1-SNAPSHOT
 org.cubeengine.module:itemrepair:1.0.0-SNAPSHOT
 org.cubeengine.module:kickban:1.0.0-SNAPSHOT
 org.cubeengine.module:kits:1.0.0-SNAPSHOT
