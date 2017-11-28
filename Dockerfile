@@ -3,7 +3,7 @@ MAINTAINER info@cubeengine.org
 
 # Th env variables of the next three layers are used for the image creation process.
 # Setting them for a container shouldn't have any effect. With the exception of a non working container ;)
-ENV MINECRAFT_VERSION=1.12 \
+ENV MINECRAFT_VERSION=1.12.2 \
 	# "bleeding" or "stable"
 	SPONGE_TYPE="bleeding" \
 	USER_NAME="minecraft"
