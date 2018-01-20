@@ -36,6 +36,7 @@ org.cubeengine.module:shout:1.0.0-SNAPSHOT
 org.cubeengine.module:signmarket:1.0.0-SNAPSHOT
 org.cubeengine.module:spawn:1.0.0-SNAPSHOT
 org.cubeengine.module:spawner:1.0.0-SNAPSHOT
+org.cubeengine.module:sql:1.0.0-SNAPSHOT
 org.cubeengine.module:squelch:1.0.0-SNAPSHOT
 org.cubeengine.module:teleport:1.0.0-SNAPSHOT
 org.cubeengine.module:travel:1.0.0-SNAPSHOT
