@@ -2,6 +2,7 @@
 #IFS=$'\x20'
 
 server_properties="${MINECRAFT_DIR}/server.properties"
+sponge_global_conf="${MINECRAFT_CONFIG_DIR}/sponge/global.conf"
 database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/database.yml"
 mongo_database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/modules/bigdata/config.yml"
 
@@ -169,14 +170,14 @@ set_yml_property() {
 #   None
 #######################################
 initialize_database_config() {
+	mkdir -p "$(dirname ${sponge_global_conf})"
 	mkdir -p "$(dirname ${database_conf})"
 
-	set_yml_property "${database_conf}" "host" "${DB_HOST}"
-	set_yml_property "${database_conf}" "port" "${DB_PORT}"
-	set_yml_property "${database_conf}" "user" "${DB_USER}"
-	set_yml_property "${database_conf}" "password" "${DB_PASSWORD}"
-	set_yml_property "${database_conf}" "database" "${DB_NAME}"
-	set_yml_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
+    echo "Creates ${sponge_global_conf} with cubeengine-sql db alias"
+    echo "sponge { sql { aliases { cubeengine-sql="jdbc:mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}" } } }" > "${sponge_global_conf}"
+
+    echo "" > "${database_conf}"
+    set_yml_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
 	set_yml_property "${database_conf}" "log-database-queries" "${DB_LOG_DATABASE_QUERIES}"
 }
 
@@ -205,7 +206,7 @@ then
 	initialize_server_properties
 fi
 
-if [ ! -f "${database_conf}" ]
+if [ ! -f "${sponge_global_conf}" ]
 then
 	echo "initialize database config..."
 	initialize_database_config
