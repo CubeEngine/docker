@@ -5,7 +5,7 @@ MAINTAINER info@cubeengine.org
 # Setting them for a container shouldn't have any effect. With the exception of a non working container ;)
 ENV MINECRAFT_VERSION=1.12.2 \
 	# "bleeding" or "stable"
-	SPONGE_TYPE="bleeding" \
+	SPONGE_TYPE="stable" \
 	USER_NAME="minecraft"
 
 ENV MINECRAFT_DIR="/home/${USER_NAME}/server" \
