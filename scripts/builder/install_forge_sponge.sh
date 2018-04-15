@@ -38,9 +38,9 @@ install_forge() {
 #######################################
 install_sponge() {
 	echo "Sponge version: $(echo ${version_info_json} | jq '.[0] | .version')"
-	
+
 	sponge_url="$(echo ${version_info_json} | jq --raw-output '.[0] | .artifacts | ."" | .url')"
-	
+
 	echo "Download sponge from ${sponge_url}"
 	curl -vo "${SPONGE_FILE}" "${sponge_url}"
 	if [ $? -ne 0 ]
@@ -48,56 +48,6 @@ install_sponge() {
 		echo "Sponge couldn't be downloaded."
 		exit 1
 	fi
-}
-
-#######################################
-# Installs the CubeEngine Plugins from the CE_PLUGINS file.
-# The file must specify the complete plugin maven identifier
-# to download the jar file with maven.
-# Arguments:
-#   None
-# Returns:
-#   None
-#######################################
-install_ce() {
-	pushd "${MINECRAFT_CE_PLUGINS_DIR}"
-		while read artifact; do
-		    local artifact_id=$(echo ${artifact} | grep -oP ':\K[^:]+' | head -n 1)
-            download_maven_artifact "${artifact}" "${artifact_id}" 0
-		done <"${SCRIPT_DIR}/CE_PLUGINS"
-	popd
-
-	echo "Cleans up the maven repo..."
-	rm -Rv "/home/${USER_NAME}/.m2/"
-}
-
-download_maven_artifact() {
-    local artifact=$1
-    local artifact_id=$2
-    local retry=$3
-
-    if [ ${retry} -gt 2 ]
-    then
-        echo "The maven artifact ${artifact} couldn't be downloaded."
-        exit 1
-    fi
-
-    local additional_params=""
-    if [ ${retry} -gt 0 ]
-    then
-        local additional_params="-U"
-    fi
-
-    local retry=$(expr ${retry} + 1)
-
-    echo "Downloads maven artifact ${artifact}. ${retry}. try..."
-    mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.1:copy -Dartifact=$(echo ${artifact} | xargs) -DoutputDirectory="./" ${additional_params}
-
-    mv -v ${artifact_id}* ${artifact_id}.jar
-    if [ $? -ne 0 ]
-    then
-        download_maven_artifact "${artifact}" "${artifact_id}" ${retry}
-    fi
 }
 
 #######################################
@@ -115,9 +65,9 @@ create_empty_json_for_root() {
 
 	local root_file=${MINECRAFT_DIR}/${filename}
 	local root_dir_file=${MINECRAFT_ROOT_STUFF_DIR}/${filename}
-	
+
 	echo "[]" > "${root_dir_file}"
-	
+
 	ln -s "${root_dir_file}" "${root_file}"
 }
 
@@ -151,6 +101,3 @@ register_root_stuff
 
 echo "install sponge..."
 install_sponge
-
-echo "install cubeengine..."
-install_ce

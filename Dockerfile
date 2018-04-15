@@ -25,7 +25,7 @@ ENV SPONGE_FILE="${MINECRAFT_STATIC_MODS_DIR}/sponge.jar"
 # Upgrading system and install some software
 RUN apk update && \
 	apk upgrade && \
-	apk --update add curl ca-certificates grep coreutils jq bash
+	apk --update add curl ca-certificates grep coreutils jq bash git
 
 # Create user and group
 RUN adduser -D -u 4928 "${USER_NAME}"
@@ -33,8 +33,12 @@ USER "${USER_NAME}:${USER_NAME}"
 
 # Install server
 COPY maven/settings.xml /usr/share/maven/conf/settings.xml
-COPY scripts/ ${SCRIPT_DIR}
-RUN bash ${SCRIPT_DIR}/install.sh
+COPY scripts/builder/install_forge_sponge.sh ${SCRIPT_DIR}/install_forge_sponge.sh
+RUN bash ${SCRIPT_DIR}/install_forge_sponge.sh
+COPY scripts/builder/install_ce.sh ${SCRIPT_DIR}/install_ce.sh
+RUN bash ${SCRIPT_DIR}/install_ce.sh
+
+COPY scripts/runtime ${SCRIPT_DIR}
 
 RUN mkdir -p "${MINECRAFT_MODS_DIR}" && \
     mkdir -p "${MINECRAFT_CONFIG_DIR}" && \
