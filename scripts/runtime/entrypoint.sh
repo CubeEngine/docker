@@ -174,7 +174,7 @@ initialize_database_config() {
 	mkdir -p "$(dirname ${database_conf})"
 
     echo "Creates ${sponge_global_conf} with cubeengine-sql db alias"
-    echo "sponge { sql { aliases { cubeengine-sql="jdbc:mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}" } } }" > "${sponge_global_conf}"
+    echo "sponge { sql { aliases { cubeengine-sql=\"jdbc:mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}\" } } }" > "${sponge_global_conf}"
 
     echo "" > "${database_conf}"
     set_yml_property "${database_conf}" "table-prefix" "${DB_TABLE_PREFIX}"
