@@ -38,7 +38,7 @@ services:
     - "25565:25565"
     - "25575:25575"
     environment:
-    - CE_PLUGINS=backpack bigdata chat conomy controlc docs elevator fun hide itemrepair kickban kits locker multiverse namehistory portals powertools protector roles selector shout signmarket spawn spawner squelch teleport travel vanillaplus vigil worlds writer
+    - CE_PLUGINS=backpack bigdata chat conomy controlc docs elevator fun hide itemrepair kickban kits locker multiverse namehistory portals powertools protector roles selector shout signmarket spawn spawner sql squelch teleport travel vanillaplus vigil worlds writer
     - DB_HOST=database-mysql
     - DB_PASSWORD=<db-user-pw>
     - MONGO_DB_HOST=database-mongo
