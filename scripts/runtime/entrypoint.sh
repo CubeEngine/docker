@@ -1,9 +1,6 @@
 #!/bin/bash
 #IFS=$'\x20'
 
-# Output every command:
-set -x
-
 server_properties="${MINECRAFT_DIR}/server.properties"
 sponge_global_conf="${MINECRAFT_CONFIG_DIR}/sponge/global.conf"
 database_conf="${MINECRAFT_CONFIG_DIR}/cubeengine/database.yml"
@@ -236,4 +233,4 @@ echo "Created CE Plugin Classpath is '${ce_classpath}'"
 echo "-------------------------------"
 echo "start the server..."
 
-java ${JAVA_VM_ARGS} -jar "${SERVER_JAR}" --mods "${ce_classpath},$(relativize_file ${SPONGE_FILE})"
+(set -x; java ${JAVA_VM_ARGS} -jar "${SERVER_JAR}" --mods "${ce_classpath},$(relativize_file ${SPONGE_FILE})")
