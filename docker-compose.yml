@@ -14,11 +14,11 @@ services:
 
   database-mongo:
     restart: always
-    image: frodenas/mongodb:3.0
+    image: bitnami/mongodb:3.6
     volumes:
-    - ./data/db-mongo:/data
+    - ./data/db-mongo:/bitnami
     environment:
-    - MONGODB_DBNAME=cubeengine
+    - MONGODB_DATABASE=cubeengine
     - MONGODB_USERNAME=minecraft
     - MONGODB_PASSWORD=<mongo-db-user-pw>
 
