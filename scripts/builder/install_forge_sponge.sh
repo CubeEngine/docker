@@ -17,6 +17,10 @@ install_forge() {
 	else
 		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${version_info_json} | jq --raw-output '.[0] | .dependencies | .forge')")"
 	fi		
+
+	# TODO forge had a bug fixed in this version ; can be removed once "latest" is actually latest
+	forge_version="1.12.2-14.23.4.2760"
+    
 	echo "forge version: ${forge_version}"
 
 	pushd "${MINECRAFT_DIR}"
