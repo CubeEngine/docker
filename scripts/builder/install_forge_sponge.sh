@@ -10,7 +10,13 @@ version_info_json="$(curl -v "https://dl-api.spongepowered.org/v1/org.spongepowe
 #   None
 #######################################
 install_forge() {
-	forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${version_info_json} | jq --raw-output '.[0] | .dependencies | .forge')")"
+	if [ "$LATEST_FORGE" = true ] 
+	then
+		forge_version_info_json="$(curl -v "https://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json")"
+		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${forge_version_info_json} | jq --raw-output '.promos | ."'"${MINECRAFT_VERSION}-recommended"'"')")"
+	else
+		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${version_info_json} | jq --raw-output '.[0] | .dependencies | .forge')")"
+	fi		
 	echo "forge version: ${forge_version}"
 
 	pushd "${MINECRAFT_DIR}"
@@ -18,7 +24,7 @@ install_forge() {
 
 		java -jar ./installer.jar --installServer
 		rm ./installer.jar
-		mv -v "./forge-${forge_version}-universal.jar" "${SERVER_JAR}"
+		mv -v "./forge-${forge_version}-universal.jar" "${SERVER_JAR}"s
 		if [ $? -ne 0 ]
 		then
 			echo "Forge couldn't be installed."

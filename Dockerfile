@@ -8,6 +8,8 @@ ENV MINECRAFT_VERSION=1.12.2 \
 	SPONGE_TYPE="stable" \
 	USER_NAME="minecraft"
 
+ENV LATEST_FORGE=true
+
 ENV MINECRAFT_DIR="/home/${USER_NAME}/server" \
     SCRIPT_DIR="/scripts"
 
