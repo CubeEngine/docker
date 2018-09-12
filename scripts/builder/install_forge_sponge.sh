@@ -13,7 +13,7 @@ install_forge() {
 	if [ "$LATEST_FORGE" = true ] 
 	then
 		forge_version_info_json="$(curl -v "https://files.minecraftforge.net/maven/net/minecraftforge/forge/promotions_slim.json")"
-		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${forge_version_info_json} | jq --raw-output '.promos | ."'"${MINECRAFT_VERSION}-recommended"'"')")"
+		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${forge_version_info_json} | jq --raw-output '.promos | ."'"${MINECRAFT_VERSION}-latest"'"')")"
 	else
 		forge_version="$(echo "${MINECRAFT_VERSION}-$(echo ${version_info_json} | jq --raw-output '.[0] | .dependencies | .forge')")"
 	fi		
