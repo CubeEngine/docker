@@ -24,7 +24,7 @@ install_forge() {
 
 		java -jar ./installer.jar --installServer
 		rm ./installer.jar
-		mv -v "./forge-${forge_version}-universal.jar" "${SERVER_JAR}"s
+		mv -v "./forge-${forge_version}-universal.jar" "${SERVER_JAR}"
 		if [ $? -ne 0 ]
 		then
 			echo "Forge couldn't be installed."
