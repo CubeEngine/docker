@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 
 echo "Download CubeEngine Modules..."
+if ! [[ -e "$MINECRAFT_MODS_DIR" ]]
+then
+  mkdir "$MINECRAFT_MODS_DIR"
+fi
+
 ce_repo_curl='https://maven.cubyte.org/service/rest/v1/search/assets/download'
-while read module
+while read -r module
 do
   if [[ "$module" =~ ^#.* ]]
   then
-    continue;
+    continue
+  fi
+
+  empty_pattern='^\s*$'
+  if [[ "$module" =~ $empty_pattern ]]
+  then
+    continue
   fi
 
   parts=($(tr '=' ' ' <<< "$module"))
