@@ -1,4 +1,4 @@
-FROM cubeengine/sponge:1.16.4-8.0.0
+FROM cubeengine/sponge:1.16.5-8.0.0
 
 # Database configuration
 ENV DB_TABLE_PREFIX="cube_" \
