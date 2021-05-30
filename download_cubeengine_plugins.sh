@@ -6,8 +6,8 @@ then
   mkdir "$MINECRAFT_MODS_DIR"
 fi
 
-nexus_host="${NEXUS_HOST:maven.cubyte.org}"
-host_header="${HOST_HEADER:"$nexus_host"}"
+nexus_host="${NEXUS_HOST:-maven.cubyte.org}"
+host_header="${HOST_HEADER:-"$nexus_host"}"
 
 ce_repo_curl="https://${nexus_host}/service/rest/v1/search/assets/download"
 
@@ -44,6 +44,7 @@ do
   target_file="${MINECRAFT_MODS_DIR}/${artifact_id}.jar"
   echo "Download ${artifact_id}-${version} to ${target_file}"
   url="${ce_repo_curl}?sort=version&repository=public&maven.groupId=${group_id}&maven.artifactId=${artifact_id}&maven.extension=jar&maven.classifier=${classifier}&maven.baseVersion=${version}"
+  echo "Via: $url"
 
   curl -H "Host: ${host_header}" -s -L -o "${target_file}" "$url"
 done < /cubeengine.config
