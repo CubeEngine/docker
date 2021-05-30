@@ -6,7 +6,11 @@ then
   mkdir "$MINECRAFT_MODS_DIR"
 fi
 
-ce_repo_curl='https://maven.cubyte.org/service/rest/v1/search/assets/download'
+nexus_host="${NEXUS_HOST:maven.cubyte.org}"
+host_header="${HOST_HEADER:"$nexus_host"}"
+
+ce_repo_curl="https://${nexus_host}/service/rest/v1/search/assets/download"
+
 while read -r module
 do
   if [[ "$module" =~ ^#.* ]]
@@ -41,7 +45,7 @@ do
   echo "Download ${artifact_id}-${version} to ${target_file}"
   url="${ce_repo_curl}?sort=version&repository=public&maven.groupId=${group_id}&maven.artifactId=${artifact_id}&maven.extension=jar&maven.classifier=${classifier}&maven.baseVersion=${version}"
 
-  curl -s -L -o "${target_file}" "$url"
+  curl -H "Host: ${host_header}" -s -L -o "${target_file}" "$url"
 done < /cubeengine.config
 
 ls -tl $MINECRAFT_MODS_DIR
