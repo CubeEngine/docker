@@ -7,7 +7,7 @@ then
 fi
 
 nexus_host="${NEXUS_HOST:-maven.cubyte.org}"
-host_header="${HOST_HEADER:-"$nexus_host"}"
+nexus_server="${NEXUS_SERVER:-"$nexus_host"}"
 
 ce_repo_curl="https://${nexus_host}/service/rest/v1/search/assets/download"
 
@@ -46,11 +46,11 @@ do
   url="${ce_repo_curl}?sort=version&repository=public&maven.groupId=${group_id}&maven.artifactId=${artifact_id}&maven.extension=jar&maven.classifier=${classifier}&maven.baseVersion=${version}"
   echo "Via: $url"
 
-  if [ "$nexus_host" = "$host_header" ]
+  if [ "$nexus_host" = "$nexus_server" ]
   then
     curl_options=()
   else
-    curl_options=(-k -H "Host: ${host_header}")
+    curl_options=(--connect-to "$nexus_host:443:$nexus_server:443")
   fi
 
   curl "${curl_options[@]}" -s -L -o "${target_file}" "$url"
