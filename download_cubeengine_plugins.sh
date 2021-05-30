@@ -46,7 +46,14 @@ do
   url="${ce_repo_curl}?sort=version&repository=public&maven.groupId=${group_id}&maven.artifactId=${artifact_id}&maven.extension=jar&maven.classifier=${classifier}&maven.baseVersion=${version}"
   echo "Via: $url"
 
-  curl -H "Host: ${host_header}" -s -L -o "${target_file}" "$url"
+  if [ "$nexus_host" = "$host_header" ]
+  then
+    curl_options=()
+  else
+    curl_options=(-k -H "Host: ${host_header}")
+  fi
+
+  curl "${curl_options[@]}" -s -L -o "${target_file}" "$url"
 done < /cubeengine.config
 
 ls -tl $MINECRAFT_MODS_DIR
