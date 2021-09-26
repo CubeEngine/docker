@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 echo "Download CubeEngine Modules..."
-if ! [[ -e "$MINECRAFT_MODS_DIR" ]]
+if ! [[ -e "$MINECRAFT_PLUGINS_DIR" ]]
 then
-  mkdir "$MINECRAFT_MODS_DIR"
+  mkdir "$MINECRAFT_PLUGINS_DIR"
 fi
 
 nexus_host="${NEXUS_HOST:-maven.cubyte.org}"
@@ -41,7 +41,7 @@ do
     group_id="org.cubeengine.module"
   fi
 
-  target_file="${MINECRAFT_MODS_DIR}/${artifact_id}.jar"
+  target_file="${MINECRAFT_PLUGINS_DIR}/${artifact_id}.jar"
   echo "Download ${artifact_id}-${version} to ${target_file}"
   url="${ce_repo_curl}?sort=version&repository=public&maven.groupId=${group_id}&maven.artifactId=${artifact_id}&maven.extension=jar&maven.classifier=${classifier}&maven.baseVersion=${version}"
   echo "Via: $url"
@@ -56,4 +56,4 @@ do
   curl "${curl_options[@]}" -s -L -o "${target_file}" "$url"
 done < /cubeengine.config
 
-ls -tl $MINECRAFT_MODS_DIR
+ls -tl ${MINECRAFT_PLUGINS_DIR}
