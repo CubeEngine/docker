@@ -17,15 +17,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Registry
+        if: steps.sponge-check.outputs.modified == 'true'
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           push: true
-          tags: cubeengine/cubeengine:1.16.5-8.0.0
+          tags: ghcr.io/cubeengine/cubeengine:1.16.5-8.0.0
