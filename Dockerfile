@@ -1,4 +1,4 @@
-FROM cubeengine/sponge:1.16.5-8.2.0
+FROM ghcr.io/cubeengine/sponge:1.16.5-8.2.0
 
 # Database configuration
 ENV DB_TABLE_PREFIX="cube_" \
