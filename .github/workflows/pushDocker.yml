@@ -24,4 +24,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ghcr.io/cubeengine/cubeengine:1.16.5-8.0.0
+          tags: ghcr.io/cubeengine/cubeengine:1.16.5-8.2.0
